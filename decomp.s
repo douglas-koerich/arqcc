@@ -19,11 +19,15 @@ section .text
     global main
 
 %macro PRINT_NOTAS 0
+    push    edx         ; SALVA o EDX que vai ser recuperado depois na pilha, pra que nao se
+                        ; perca o resto da divisao feita na instrucao anterior
     push    eax         ; O quociente da divisao estah em EAX (o resto em EDX)
     push    ebx         ; O divisor, que eh o valor de face da nota
     push    str_notas
     call    printf      ; Esse printf vai modificar o EDX, com certeza!, por isso o empilhamos
     add     esp, 12
+    pop     edx         ; RECUPERA o resto que foi salvo na pilha
+                        ; (pela instrucao a seguir, deduz-se que poderia fazer: pop eax)
 %endmacro
 
 main:
@@ -50,18 +54,18 @@ main:
     mov     ebx, 100    ; A instrucao DIV nao aceita um operando imediato
     div     ebx
 
-    push    edx         ; SALVA o EDX que vai ser recuperado depois na pilha, pra que nao se
-                        ; perca o resto da divisao feita na instrucao anterior
+    ;push    edx         ; SALVA o EDX que vai ser recuperado depois na pilha, pra que nao se
+    ;                    ; perca o resto da divisao feita na instrucao anterior
 
     ;push    eax         ; O quociente da divisao estah em EAX (o resto em EDX)
     ;push    ebx         ; O divisor, que eh o valor de face da nota
     ;push    str_notas
     ;call    printf      ; Esse printf vai modificar o EDX, com certeza!, por isso o empilhamos
     ;add     esp, 12
-    PRINT_NOTAS
 
-    pop     edx         ; RECUPERA o resto que foi salvo na pilha
-                        ; (pela instrucao a seguir, deduz-se que poderia fazer: pop eax)
+    ;pop     edx         ; RECUPERA o resto que foi salvo na pilha
+    ;                    ; (pela instrucao a seguir, deduz-se que poderia fazer: pop eax)
+    PRINT_NOTAS
 
     mov     eax, edx    ; Copia para EAX (proximo dividendo) o valor em EDX (resto da divisao
                         ; anterior), pra ser dividido pelo valor de nota seguinte
@@ -69,7 +73,7 @@ main:
     mov     ebx, 50
     div     ebx
 
-    PRINT_NOTAS
+    PRINT_NOTAS         ; Uso de macro (precursora dos comandos de linguagens de alto nivel)
 
     mov     ebx, 0      ; 0 = EXIT_SUCCESS
     mov     eax, 1      ; 1 = exit (return)
