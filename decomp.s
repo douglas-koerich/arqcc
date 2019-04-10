@@ -30,6 +30,14 @@ section .text
                         ; (pela instrucao a seguir, deduz-se que poderia fazer: pop eax)
 %endmacro
 
+%macro PRINT_NOTAS_N 1
+    mov     eax, edx
+    xor     edx, edx
+    mov     ebx, %1
+    div     ebx
+    PRINT_NOTAS
+%endmacro
+
 main:
     push    str_total   ; Source = str_total (onde estah o argumento/parametro da subrotina)
     call    printf      ; Chama a subrotina (funcao em C)
@@ -72,8 +80,35 @@ main:
     xor     edx, edx    ; Zera o EDX, do contrario vai "contaminar" a divisao seguinte
     mov     ebx, 50
     div     ebx
-
     PRINT_NOTAS         ; Uso de macro (precursora dos comandos de linguagens de alto nivel)
+
+    ;mov     eax, edx
+    ;xor     edx, edx
+    ;mov     ebx, 20
+    ;div     ebx
+    ;PRINT_NOTAS
+    PRINT_NOTAS_N 20
+
+    ;mov     eax, edx
+    ;xor     edx, edx
+    ;mov     ebx, 10
+    ;div     ebx
+    ;PRINT_NOTAS
+    PRINT_NOTAS_N 10
+
+    ;mov     eax, edx
+    ;xor     edx, edx
+    ;mov     ebx, 5
+    ;div     ebx
+    ;PRINT_NOTAS
+    PRINT_NOTAS_N 5
+
+    ;mov     eax, edx
+    ;xor     edx, edx
+    ;mov     ebx, 2
+    ;div     ebx
+    ;PRINT_NOTAS
+    PRINT_NOTAS_N 2
 
     mov     ebx, 0      ; 0 = EXIT_SUCCESS
     mov     eax, 1      ; 1 = exit (return)
